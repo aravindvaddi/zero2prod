@@ -16,6 +16,7 @@ name = "zero2prod"
 actix-web = "4.4.1"
 tokio = { version = "1.35.1", features = ["macros", "rt-multi-thread", "rt"] }
 serde = { version = "1.0.195", features = ["derive"] }
+config = { version = "0.13.4", features = [] }
 
 [dependencies.sqlx]
 version = "0.7.3"
