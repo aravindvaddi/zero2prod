@@ -10,8 +10,7 @@ fi
 if ! [ -x "$(command -v sqlx)" ]; then
   echo >&2 "Error: sqlx is not installed."
   echo >&2 "Use:"
-  echo >&2 "    cargo install --version='~0.6' sqlx-cli \
-  --no-default-features --features rustls,postgres"
+  echo >&2 "    cargo install --version='~0.7' sqlx-cli --no-default-features --features rustls,postgres"
   echo >&2 "to install it."
   exit 1
 fi
@@ -20,7 +19,6 @@ DB_USER="${POSTGRES_USER:=postgres}"
 DB_PASSWORD="${POSTGRES_PASSWORD:=password}"
 DB_NAME="${POSTGRES_DB:=newsletter}"
 DB_PORT="${POSTGRES_PORT:=5432}"
-DB_HOST="${POSTGRES_HOST:=localhost}"
 
 if [[ -z "${SKIP_DOCKER}" ]]
 then
@@ -41,8 +39,7 @@ then
     postgres -N 1000
 fi
 
-export PGPASSWORD="${DB_PASSWORD}"
-until psql -h "localhost" -U "${DB_USER}" -p "${DB_PORT}" -d "postgres" -c '\q'; do
+until PGPASSWORD="${DB_PASSWORD}" psql -h "localhost" -U "${DB_USER}" -p "${DB_PORT}" -d "postgres" -c '\q'; do
   >&2 echo "Postgres is still unavailable - sleeping"
   sleep 1
 done
